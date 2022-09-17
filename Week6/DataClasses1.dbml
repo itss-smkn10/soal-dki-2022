@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="week_2_ITSS" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-RNJ6567;Initial Catalog=week_2_ITSS;Integrated Security=True" SettingsObjectName="Week6.Properties.Settings" SettingsPropertyName="week_2_ITSSConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Administrator" Member="Administrators">
+    <Type Name="Administrator">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="BirthDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Administrator_SalesHeader" Member="SalesHeaders" ThisKey="Id" OtherKey="AdministratordId" Type="SalesHeader" />
+      <Association Name="Role_Administrator" Member="Role" ThisKey="RoleId" OtherKey="id" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="Id" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_SalesHeader" Member="SalesHeaders" ThisKey="Id" OtherKey="CustomerId" Type="SalesHeader" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Merchandise" Member="Merchandises">
+    <Type Name="Merchandise">
+      <Column Name="Id" Type="System.String" DbType="VarChar(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ModelId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Specification" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Stock" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ImagePath" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Merchandise_SalesDetail" Member="SalesDetails" ThisKey="Id" OtherKey="MerchandiseId" Type="SalesDetail" />
+      <Association Name="Model_Merchandise" Member="Model" ThisKey="ModelId" OtherKey="Id" Type="Model" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Model" Member="Models">
+    <Type Name="Model">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Model_Merchandise" Member="Merchandises" ThisKey="Id" OtherKey="ModelId" Type="Merchandise" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Roles">
+    <Type Name="Role">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Role_Administrator" Member="Administrators" ThisKey="id" OtherKey="RoleId" Type="Administrator" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SalesHeader" Member="SalesHeaders">
+    <Type Name="SalesHeader">
+      <Column Name="Id" Type="System.String" DbType="VarChar(11) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AdministratordId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentType" Type="System.String" DbType="VarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CardNumber" Type="System.String" DbType="VarChar(16)" CanBeNull="true" />
+      <Association Name="SalesHeader_SalesDetail" Member="SalesDetails" ThisKey="Id" OtherKey="SalesHeaderId" Type="SalesDetail" />
+      <Association Name="Customer_SalesHeader" Member="Customer" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Administrator_SalesHeader" Member="Administrator" ThisKey="AdministratordId" OtherKey="Id" Type="Administrator" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SalesDetail" Member="SalesDetails">
+    <Type Name="SalesDetail">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SalesHeaderId" Type="System.String" DbType="VarChar(11) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseId" Type="System.String" DbType="VarChar(6) NOT NULL" CanBeNull="false" />
+      <Column Name="Qty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Merchandise_SalesDetail" Member="Merchandise" ThisKey="MerchandiseId" OtherKey="Id" Type="Merchandise" IsForeignKey="true" />
+      <Association Name="SalesHeader_SalesDetail" Member="SalesHeader" ThisKey="SalesHeaderId" OtherKey="Id" Type="SalesHeader" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
